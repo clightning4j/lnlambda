@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -20,22 +21,22 @@ type Request struct {
 func PostMethod(c *gin.Context) {
 	jsonData, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
-		// TODO: retunr error
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("Error: %s", err))
 		return
 	}
 	var req Request
 	if err := json.Unmarshal(jsonData, &req); err != nil {
-		// TODO: return an error
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("Error: %s", err))
 		return
 	}
 	client := lnsocket.New(req.NodeID, req.Address)
 	if err := client.Connect(); err != nil {
-		// TODO return the error
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("Error: %s", err))
 		return
 	}
 	response, err := client.Call(req.Method, req.Params, req.Rune)
 	if err != nil {
-		// TODO return an error
+		c.JSON(http.StatusInternalServerError, fmt.Sprintf("Error: %s", err))
 		return
 	}
 	c.JSON(http.StatusOK, response)
