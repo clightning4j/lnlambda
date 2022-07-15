@@ -1,6 +1,10 @@
 FROM golang:alpine3.16
 LABEL maintainer="Vincenzo Palazzo (@vincenzopalazzo) vincenzopalazzodev@gmail.com"
 
-RUN make dep
+workdir lnlambda
 
-CMD [ "make", "run" ]
+COPY . .
+
+RUN go get -d ./...
+
+CMD [ "go", "run", "main.go" ]
