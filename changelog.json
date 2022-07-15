@@ -1,0 +1,16 @@
+{
+    "package_name": "lnlambda",
+    "version": "v0.0.2",
+    "api": {
+      "name": "github",
+      "repository": "clightning4j/lnlambda",
+      "branch": "main"
+    },
+    "generation_method": {
+      "name": "metadata",
+      "header_filter": false
+    },
+    "serialization_method": {
+      "name": "md"
+    }
+  }
