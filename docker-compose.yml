@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+    lnlambda:
+        build:
+          .
+        ports:
+          - "9002:9002"
