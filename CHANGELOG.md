@@ -1,3 +1,9 @@
+# v0.0.3
+
+## Fixed
+- add cors header ([commit](https://github.com/clightning4j/lnlambda/commit/89623918c07a32f341f9cfcd1f7374cc6f9dbe55)). @vincenzopalazzo 18-08-2022
+
+
 # v0.0.2
 
 ## Added
