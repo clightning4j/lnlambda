@@ -30,6 +30,7 @@ func PostMethod(c *gin.Context) {
 		return
 	}
 	client := lnsocket.New(req.NodeID, req.Address)
+	defer client.Disconnect()
 	if err := client.Connect(); err != nil {
 		c.JSON(http.StatusInternalServerError, fmt.Sprintf("Error: %s", err))
 		return
@@ -42,8 +43,28 @@ func PostMethod(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func main() {
 	router := gin.Default()
+	// Source https://stackoverflow.com/a/54802142/10854225
+	router.Use(CORSMiddleware())
+
 	router.POST("/lnsocket", PostMethod)
 
 	router.GET("/welcome", func(c *gin.Context) {
